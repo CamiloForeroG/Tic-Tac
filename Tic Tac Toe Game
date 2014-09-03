@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Tic Tac Toe</title>
+    <script type="text/javascript" src="Scripts/jquery-1.4.1.js"></script>
+    <script>
+        $(document).ready(function () {
+            var ultimoMovimiento;
+            var tdIndex;
+            var trIndex;
+            var evalDiagIzq = "";
+            var evalDiagDer = "";
+            var evalHor = "";
+            var evalVert = "";
+            $('td').click(function () {
+                $(this).text(ultimoMovimiento == "" ? "X" : (ultimoMovimiento == "X" ? "O" : "X"));
+                ultimoMovimiento = $(this).text();
+                evaluar($(this));
+            });
+
+            $("#BtnReiniciar").click(function () {
+                $("td").text("");
+                ultimoMovimiento = "";
+            });
+
+            function evaluar(control) {
+                tdIndex = control.index();
+                trIndex = control.closest("tr").index();
+                $("tr").each(function (index) {
+                    evalHor = evalHor + $("tr").eq(trIndex).find("td").eq(index).text();
+                    if (evalHor == "XXX" || evalHor == "OOO") Ganador();
+
+                    evalVert = evalVert + $(this).find("td").eq(tdIndex).text();
+                    if (evalVert == "XXX" || evalVert == "OOO")
+                        Ganador();
+
+                    /*evaluar diagonal*/
+                    if ($("tr").eq(1).find("td").eq(1).text() == "" && $("tr").eq(1).find("td").eq(1).text() == ultimoMovimiento) return;
+                    
+                    evalDiagIzq = evalDiagIzq + $(this).find("td").eq(index).text();
+                    if (evalDiagIzq == "XXX" || evalDiagIzq == "OOO")
+                        Ganador();
+
+                    evalDiagDer = evalDiagDer + $(this).find("td").eq($(this).find("td").length - (index + 1)).text();
+                    if (evalDiagDer == "XXX" || evalDiagDer == "OOO")
+                        Ganador();
+                });
+                evalDiagIzq = "";
+                evalHor = "";
+                evalVert = "";
+                evalDiagDer = "";
+            };
+
+            function Ganador() {
+                alert("El jugador " + ultimoMovimiento + " ha ganado la partida");
+                ultimoMovimiento = "";
+                $("td").text("");
+            }
+        });
+
+        
+    </script>
+    <meta name="viewport" content="width=600px" />
+    <style>
+    table, h1 {
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    td {
+        width: 50px;
+        height: 50px;
+        border: solid;
+    }
+</style>
+</head>
+
+<body style="text-align:center">
+    <table>
+        <h1>Codetag - Know your enemy</h1>
+        <tr>
+            <td id="0"></td>
+            <td id="1"></td>
+            <td id="2"></td>
+        </tr>
+        <tr>
+            <td id="3"></td>
+            <td id="4"></td>
+            <td id="5"></td>
+        </tr>
+        <tr>
+            <td id="6"></td>
+            <td id="7"></td>
+            <td id="8"></td>
+        </tr>
+    </table>
+
+    <br />
+    <input type="button" id="BtnReiniciar" value="Reiniciar" style="text-align:center"/>
+</body>
+</html>
